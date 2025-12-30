@@ -10,42 +10,43 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/Hari25SHP/simple-java-maven-app.git'
+                git branch: 'master',
+                    url: 'https://github.com/Hari25SHP/simple-java-maven-app.git'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
 
         stage('Upload Artifact to Nexus') {
             steps {
-                sh 'mvn deploy'
+                bat 'mvn deploy'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t hari8382/simple-website:latest .'
+                bat 'docker build -t hari8382/simple-website:latest .'
             }
         }
 
         stage('Push Image to Docker Hub') {
             steps {
-                sh 'docker push 8382/simple-website:latest'
+                bat 'docker push hari8382/simple-website:latest'
             }
         }
 
         stage('Deploy to Tomcat (8082)') {
             steps {
-                sh '''
-                docker rm -f simple-website || true
-                docker run -d \
-                  --name simple-website \
-                  -p 8082:8080 \
-                 hari8382/simple-website:latest
+                bat '''
+                docker rm -f simple-website || exit 0
+                docker run -d ^
+                  --name simple-website ^
+                  -p 8082:8080 ^
+                  hari8382/simple-website:latest
                 '''
             }
         }
