@@ -10,8 +10,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'master',
-                git 'https://github.com/Hari25SHP/simple-java-maven-app.git'
+                git branch: 'master', url: 'https://github.com/Hari25SHP/simple-java-maven-app.git'
             }
         }
 
